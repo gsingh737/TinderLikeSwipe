@@ -6,7 +6,9 @@ import {
     View,
     Animated,
     PanResponder,
-    Dimensions
+    Dimensions,
+    LayoutAnimation,
+    UIManager
 } from 'react-native';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -41,6 +43,18 @@ class Deck extends Component {
 
         this.state = { panResponder, position, index: 0 };
     }
+
+    componentWillUpdate() {
+        UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+        LayoutAnimation.spring();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps !== this.props.data) {
+            this.setState({index: 0});
+        }
+    }
+
 
     forceSwipe(direction){
         const x = direction === 'right' ? SCREEN_WIDTH : -SCREEN_WIDTH;
